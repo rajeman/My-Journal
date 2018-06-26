@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
         setContentView(R.layout.activity_main);
         //init firebase fields
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference().child("messages");
+        mDatabaseReference = mFirebaseDatabase.getReference();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         //set a listener to firebase auth
@@ -46,11 +46,12 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     //we are sgined in
+                    String uid = user.getUid();
+                    mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
                 } else {
                     //we are signed out. try to sign in by calling sign in fragment
 
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, new SignInFragment()).commitAllowingStateLoss();
-
 
 
                 }

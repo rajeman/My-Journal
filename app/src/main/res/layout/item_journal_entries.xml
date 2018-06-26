@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+   >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
+        android:paddingRight="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="3dp"
+        android:paddingTop="5dp"
+        android:background="@color/icons"
+        >
+
+       <LinearLayout
+           android:layout_width="0dp"
+           android:layout_weight="2"
+           android:layout_height="match_parent"
+           android:orientation="vertical"
+           android:paddingRight="3dp"
+           android:paddingEnd="3dp">
+
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/wk_day_text_view"
+               android:layout_gravity="center_horizontal"
+               android:textSize="17sp"
+               tools:text="Tue" />
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/day_text_view"
+               android:layout_gravity="center_horizontal"
+               android:textSize="25sp"
+               tools:text="26" />
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/time_text_view"
+               android:layout_gravity="center_horizontal"
+               android:textSize="13sp"
+               tools:text="10:45pm" />
+
+
+       </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+           >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/entry_title"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:textColor="@color/primary_text"
+            android:layout_marginBottom="5dp"
+            tools:text="A very Good Day"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/entry_text"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:maxLines="2"
+                tools:text="On a very Hot afternoon of after making a nice meal
+for my self"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+               android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/location_text_view"
+                    android:textSize="17sp"
+                    android:layout_gravity="start"
+                    android:layout_marginRight="5dp"
+                    tools:text="Ibadan" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/month_year_text_view"
+                    android:textSize="17sp"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    tools:text="June, 2018" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                android:maxHeight="100dp"
+                android:maxWidth="100dp"
+                tools:maxWidth="100dp"
+                tools:maxHeight="100dp"
+                tools:src="@drawable/ic_image"
+                />
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</layout>
