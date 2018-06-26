@@ -26,30 +26,30 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
     private FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mDatabaseReference;
     private FirebaseAuth mFirebaseAuth;
-    public static  final int RC_SIGN_IN = 18;
-    public static  final int RC_SIGN_IN_SUCCESS = 19;
-    public static  final int RC_SIGN_IN_FAIL = 10;
+    public static final int RC_SIGN_IN = 18;
+    public static final int RC_SIGN_IN_SUCCESS = 19;
+    public static final int RC_SIGN_IN_FAIL = 10;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-            //init firebase fields
+        //init firebase fields
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference().child("messages");
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-       //set a listener to firebase auth
+        //set a listener to firebase auth
         mFirebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
+                if (user != null) {
                     //we are sgined in
-                }
-
-                else{
+                } else {
                     //we are signed out. try to sign in by calling sign in fragment
-                    getSupportFragmentManager().beginTransaction().add(R.id.main_activity_frame, new SignInFragment()).commit();
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, new SignInFragment()).commitAllowingStateLoss();
 
 
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.sign_out_menu:
                 AuthUI.getInstance().signOut(this);
         }
@@ -83,5 +83,12 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
     public void onSignInCancelled() {
 
         finish();
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 }
