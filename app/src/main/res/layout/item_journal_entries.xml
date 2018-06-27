@@ -12,6 +12,8 @@
         android:paddingLeft="8dp"
         android:paddingRight="12dp"
         android:paddingStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
         android:paddingTop="5dp">
 
         <LinearLayout
@@ -69,7 +71,7 @@
                 tools:text="A very Good Day" />
 
             <TextView
-                android:id="@+id/entry_text"
+                android:id="@+id/entry_text_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -122,6 +124,7 @@ for my self" />
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:id="@+id/entry_image_view"
                 android:adjustViewBounds="true"
                 android:maxHeight="100dp"
                 android:maxWidth="100dp"

@@ -7,6 +7,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,15 +22,14 @@ import java.util.List;
 public class AppViewModel extends AndroidViewModel {
     Fragment fragment;
     AppViewModel appViewModel;
-    JournalEntriesRecyclerViewBinding jEntryBinding;
-    FirebaseDatabase mFirebaseDatabase;
-    DatabaseReference mDatabaseReference;
-    MutableLiveData<List<UserEntry>> userEntries;
 
+    MutableLiveData<List<UserEntry>> userEntries;
+    private MutableLiveData<Integer> uploadResult;
     public AppViewModel(@NonNull Application application) {
         super(application);
         appViewModel = this;
     }
+
 
     public MutableLiveData<List<UserEntry>> getUserEntry() {
 
@@ -39,7 +40,15 @@ public class AppViewModel extends AndroidViewModel {
         return userEntries;
     }
 
+    public MutableLiveData<Integer> getUploadResult(){
+        if(uploadResult == null){
+            uploadResult = new SingleLiveEvent<>();
+        }
+        return uploadResult;
+    }
     public void fetchUserEntries(String userUid) {
+        FirebaseDatabase mFirebaseDatabase;
+        DatabaseReference mDatabaseReference;
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference();
@@ -60,6 +69,27 @@ public class AppViewModel extends AndroidViewModel {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 appViewModel.getUserEntry().setValue(null);
+            }
+        });
+    }
+
+    public void saveEntry(String userUid, UserEntry entry){
+        FirebaseDatabase mFirebaseDatabase;
+        DatabaseReference mDatabaseReference;
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseDatabase.getReference();
+        DatabaseReference userReference = mDatabaseReference.child("users").child(userUid).child("entries");
+        String entryId = userReference.push().getKey();
+        entry.setEntryId(entryId);
+        userReference.child(entryId).setValue(entry).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                appViewModel.getUploadResult().setValue(1);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                appViewModel.getUploadResult().setValue(0);
             }
         });
     }

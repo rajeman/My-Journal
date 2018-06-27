@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements  SignInCancelledNotifier {
+public class MainActivity extends AppCompatActivity implements  SignInCancelledNotifier, JournalEntriesFragment.FabClickListener {
 
     private FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mDatabaseReference;
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
     public static final int RC_SIGN_IN = 18;
     public static final int RC_SIGN_IN_SUCCESS = 19;
     public static final int RC_SIGN_IN_FAIL = 10;
+    String uid;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     //we are sgined in
-                    String uid = user.getUid();
+                     uid = user.getUid();
                     JournalEntriesFragment jFragment = new JournalEntriesFragment();
                     Bundle args = new Bundle();
                     args.putString(getString(R.string.user_uid_key), uid);
@@ -97,6 +98,20 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    public void onFabClicked() {
+        Toast.makeText(this, "fab clicked", Toast.LENGTH_SHORT).show();
+
+        AddEntryFragment addEntryFragment = new AddEntryFragment();
+        Bundle args = new Bundle();
+        args.putString(getString(R.string.user_uid_key), uid);
+        addEntryFragment.setArguments(args);
+
+        //mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, addEntryFragment).addToBackStack(null).commitAllowingStateLoss();
 
     }
 }

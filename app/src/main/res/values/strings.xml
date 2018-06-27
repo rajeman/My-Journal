@@ -4,4 +4,9 @@
     <string name="user_uid_key">USER_UID</string>
     <string name="fetching_data">Fetching Data...</string>
     <string name="network_error">Network Error</string>
+    <string name="time_stamp">TimeStamp</string>
+    <string name="entry_title_hint">Enter title..</string>
+    <string name="entry_text_hint">Enter text...</string>
+    <string name="entry_location_hint">Enter location...</string>
+    <string name="entry_location_text_view">Location:</string>
 </resources>

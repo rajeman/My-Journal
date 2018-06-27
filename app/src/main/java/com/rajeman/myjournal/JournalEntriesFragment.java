@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.gturedi.views.StatefulLayout;
 import com.rajeman.myjournal.databinding.JournalEntriesRecyclerViewBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JournalEntriesFragment extends Fragment {
@@ -30,7 +30,13 @@ public class JournalEntriesFragment extends Fragment {
     Fragment fragment;
     JournalEntriesRecyclerViewBinding jEntryBinding;
     String userUid;
+    EntriesAdapter mAdapter;
+    FloatingActionButton fab;
 
+    public interface FabClickListener{
+
+        void onFabClicked();
+    }
 
     public JournalEntriesFragment() {
         fragment = this;
@@ -45,14 +51,15 @@ public class JournalEntriesFragment extends Fragment {
         jEntryBinding = DataBindingUtil.inflate(inflater, R.layout.journal_entries_recycler_view, container, false);
         statefulLayout = jEntryBinding.journalEntriesStateful;
         mRecyclerView = jEntryBinding.entriesRecyclerView;
+        fab = jEntryBinding.fab;
+
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         statefulLayout.showLoading(getString(R.string.fetching_data));
-     /*   mAdapter =  new ThreadPostsAdapter(this, new ArrayList<ThreadData>());
-        statefulLayout.showLoading(getString(R.string.connecting));
+        mAdapter =  new EntriesAdapter(this, new ArrayList<UserEntry>());
         mRecyclerView.setAdapter(mAdapter);
-        */
+
         return jEntryBinding.getRoot();
 
     }
@@ -60,7 +67,14 @@ public class JournalEntriesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        final FabClickListener fabClickListener = (FabClickListener) getActivity();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //notifyactivity of click
+                fabClickListener.onFabClicked();
+            }
+        });
         userUid = getArguments().getString(getString(R.string.user_uid_key));
 
         appViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
@@ -82,6 +96,9 @@ public class JournalEntriesFragment extends Fragment {
                     statefulLayout.showEmpty();
                 }
                 else{
+                    mAdapter.setNewItems(userEntries);
+                    mAdapter.notifyDataSetChanged();
+                    statefulLayout.showContent();
                     Toast.makeText(fragment.getContext(), "got something", Toast.LENGTH_SHORT).show();
                 }
 
