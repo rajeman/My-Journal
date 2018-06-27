@@ -2,6 +2,7 @@ package com.rajeman.myjournal;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,7 +48,13 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
                 if (user != null) {
                     //we are sgined in
                     String uid = user.getUid();
-                    mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
+                    JournalEntriesFragment jFragment = new JournalEntriesFragment();
+                    Bundle args = new Bundle();
+                    args.putString(getString(R.string.user_uid_key), uid);
+                    jFragment.setArguments(args);
+
+                    //mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, jFragment).commitAllowingStateLoss();
                 } else {
                     //we are signed out. try to sign in by calling sign in fragment
 

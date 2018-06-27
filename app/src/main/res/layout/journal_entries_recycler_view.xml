@@ -5,7 +5,7 @@
 
 
     <com.gturedi.views.StatefulLayout
-        android:id="@+id/thread_post_stateful"
+        android:id="@+id/journal_entries_stateful"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >

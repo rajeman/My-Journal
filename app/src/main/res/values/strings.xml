@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">My Journal</string>
     <string name="sign_out">Sign Out</string>
+    <string name="user_uid_key">USER_UID</string>
+    <string name="fetching_data">Fetching Data...</string>
+    <string name="network_error">Network Error</string>
 </resources>
