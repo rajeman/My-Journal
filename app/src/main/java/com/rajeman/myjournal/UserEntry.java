@@ -12,7 +12,7 @@ public class UserEntry {
 
     Map<String, Object> timeStamp;
     String title;
-    String summary;
+    String story;
     String location;
     String entryId;
     String imageLink;
@@ -20,13 +20,13 @@ public class UserEntry {
     public UserEntry() {
     }
 
-    public UserEntry( String title, String summary, String location,  String imageLink) {
+    public UserEntry( String title, String story, String location,  String imageLink) {
 
         Map<String, Object> currentTime = new HashMap<>();
         currentTime.put("timestamp", ServerValue.TIMESTAMP);
         this.timeStamp = currentTime;
         this.title = title;
-        this.summary = summary;
+        this.story = story;
         this.location = location;
         this. imageLink = imageLink;
     }
@@ -52,12 +52,12 @@ public class UserEntry {
         this.title = title;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getStory() {
+        return story;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setStory(String story) {
+        this.story = story;
     }
 
     public String getLocation() {

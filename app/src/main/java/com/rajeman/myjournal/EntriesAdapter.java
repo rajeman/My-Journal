@@ -10,9 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
+import java.util.Calendar;
 import java.util.List;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesViewHolder> {
     private List<UserEntry> userEntryList;
@@ -34,6 +35,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
         TextView textSummaryTextView;
         TextView locationTextView;
         TextView monthYearTextView;
+        TextView timeTextView;
         ImageView entryImage;
         public EntriesViewHolder(View itemView) {
             super(itemView);
@@ -43,6 +45,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             textSummaryTextView = itemView.findViewById(R.id.entry_text_summary);
             locationTextView = itemView.findViewById(R.id.location_text_view);
             monthYearTextView = itemView.findViewById(R.id.month_year_text_view);
+            timeTextView = itemView.findViewById(R.id.time_text_view);
             entryImage = itemView.findViewById(R.id.entry_image_view);
 
         }
@@ -61,7 +64,25 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
     public void onBindViewHolder(@NonNull EntriesViewHolder holder, int position) {
 
         String day, wkDay, title, summary, location, monthYear;
-        holder.textSummaryTextView.setText(userEntryList.get(position).getSummary());
+        UserEntry userEntry = userEntryList.get(position);
+        holder.textSummaryTextView.setText(userEntry.getStory());
+        holder.locationTextView.setText(userEntry.getLocation());
+        holder.titleTextView.setText(userEntry.getTitle());
+
+        DateUtils dateUtils = new DateUtils(userEntry.getTimestampLong());
+        holder.weekDayTextView.setText(dateUtils.getWeekDay());
+        holder.dayTextView.setText(dateUtils.getDay());
+        holder.timeTextView.setText(dateUtils.getTime());
+        holder.monthYearTextView.setText(dateUtils.getMonthYear());
+
+        if(userEntry.getImageLink() != null){
+            GlideApp.with(fragment).load(userEntry.getImageLink()).centerCrop().transition(withCrossFade()).into(holder.entryImage);
+        } else{
+            GlideApp.with(fragment).clear(holder.entryImage);
+        }
+
+
+
 
     }
 

@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
     public static final int RC_SIGN_IN = 18;
     public static final int RC_SIGN_IN_SUCCESS = 19;
     public static final int RC_SIGN_IN_FAIL = 10;
+    private boolean isJustLoggedIn = false;
     String uid;
 
     @Override
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //init firebase fields
+        isJustLoggedIn = false;
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -47,18 +49,32 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    //we are sgined in
+                    //we are signed in
                      uid = user.getUid();
-                    JournalEntriesFragment jFragment = new JournalEntriesFragment();
-                    Bundle args = new Bundle();
-                    args.putString(getString(R.string.user_uid_key), uid);
-                    jFragment.setArguments(args);
 
-                    //mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, jFragment).commitAllowingStateLoss();
+                     //if it is a configuration change, don't reload the fragment. Android OS does that
+                     if(savedInstanceState == null) {
+                         JournalEntriesFragment jFragment = new JournalEntriesFragment();
+                         Bundle args = new Bundle();
+                         args.putString(getString(R.string.user_uid_key), uid);
+                         jFragment.setArguments(args);
+
+                         //mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
+                         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, jFragment).commitAllowingStateLoss();
+                     }
+                     else{
+                         //savedinstance state is not null and the user just logged in
+                         if(isJustLoggedIn){
+                             JournalEntriesFragment jFragment = new JournalEntriesFragment();
+                             Bundle args = new Bundle();
+                             args.putString(getString(R.string.user_uid_key), uid);
+                             jFragment.setArguments(args);
+                             getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, jFragment).commitAllowingStateLoss();
+                         }
+                     }
                 } else {
                     //we are signed out. try to sign in by calling sign in fragment
-
+                            isJustLoggedIn = true;
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, new SignInFragment()).commitAllowingStateLoss();
 
 
@@ -84,8 +100,11 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
         switch (item.getItemId()) {
             case R.id.sign_out_menu:
                 AuthUI.getInstance().signOut(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return true;
+
     }
 
     @Override
@@ -111,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
         addEntryFragment.setArguments(args);
 
         //mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, addEntryFragment).addToBackStack(null).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, addEntryFragment).addToBackStack(null).commit();
 
     }
 }

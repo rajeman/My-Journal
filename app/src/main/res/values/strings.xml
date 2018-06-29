@@ -9,4 +9,16 @@
     <string name="entry_text_hint">Enter text...</string>
     <string name="entry_location_hint">Enter location...</string>
     <string name="entry_location_text_view">Location:</string>
+    <string name="add_image">Add Photo</string>
+    <string name="day">entry_day</string>
+    <string name="wk_day">week_day_key</string>
+    <string name="month_year">month_year_key</string>
+    <string name="time_txt">time_key</string>
+    <string name="title_txt">title_txt_key</string>
+    <string name="text_txt">text_text_key</string>
+    <string name="location_txt">location_txt_key</string>
+    <string name="select_intent">Complete action using...</string>
+    <string name="save_entry">Save Entry</string>
+    <string name="entry_image">entry_image_key</string>
+    <string name="enter_title">You must enter a title</string>
 </resources>
