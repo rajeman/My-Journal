@@ -1,7 +1,10 @@
 package com.rajeman.myjournal;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -17,8 +20,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class NetworkUtils {
-    private static final int UPLOAD_FAILED = 0;
-    private static final int UPLOAD_SUCCESS = 1;
+    public static final Integer UPLOAD_FAILED = 0;
+    public static final Integer UPLOAD_SUCCESS = 1;
+
+    private static UploadTask mUploadTask;
+
 
     public static void fetchUserEntries(final AppViewModel appViewModel, String userUid) {
 
@@ -51,14 +57,19 @@ public class NetworkUtils {
     }
 
     public static void saveEntry(final AppViewModel appViewModel, final String userUid, final UserEntry entry, Uri imageUri) {
-
+        final Context context = appViewModel.getApplication().getApplicationContext();
+        final String uploadPrefix = context.getString(R.string.upload_prefix);
+        final String uploadSuffix = context.getString(R.string.upload_suffix);
+        final String uploadFailSuffix = context.getString(R.string.upload_fail_suffix);
         if (imageUri != null) {
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference storageReference = firebaseStorage.getReference();
-            Uri imgUrl;
+           // Uri imgUrl;
             final StorageReference photoReference = storageReference.child("users")
                     .child(userUid).child("photo").child(UUID.randomUUID().toString());
-            photoReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+          mUploadTask =  photoReference.putFile(imageUri);
+                 mUploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //start text upload
@@ -86,6 +97,8 @@ public class NetworkUtils {
                             userReference.child(entryId).setValue(entry).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+
+                                    Toast.makeText(context,  uploadPrefix + " \""   + entry.getTitle()  + "\" " + uploadSuffix, Toast.LENGTH_SHORT).show();
                                     appViewModel.getUploadResult().setValue(UPLOAD_SUCCESS);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -101,7 +114,7 @@ public class NetworkUtils {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    //
+                    Toast.makeText(context,  uploadPrefix + " \""   + entry.getTitle()  + "\" " + uploadFailSuffix, Toast.LENGTH_SHORT).show();
                     appViewModel.getUploadResult().setValue(UPLOAD_FAILED);
                 }
             });
@@ -117,16 +130,24 @@ public class NetworkUtils {
             userReference.child(entryId).setValue(entry).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+                    Toast.makeText(context,  uploadPrefix + " \""   + entry.getTitle()  + "\" " + uploadSuffix, Toast.LENGTH_SHORT).show();
                     appViewModel.getUploadResult().setValue(UPLOAD_SUCCESS);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context,  uploadPrefix + " \""   + entry.getTitle()  + "\" " + uploadFailSuffix, Toast.LENGTH_SHORT).show();
                     appViewModel.getUploadResult().setValue(UPLOAD_FAILED);
                 }
             });
         }
 
 
+    }
+
+    public static void cancelUpload(AppViewModel appViewModel){
+      if(mUploadTask != null && mUploadTask.isInProgress()){
+          mUploadTask.cancel();
+      }
     }
 }

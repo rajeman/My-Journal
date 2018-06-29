@@ -21,4 +21,12 @@
     <string name="save_entry">Save Entry</string>
     <string name="entry_image">entry_image_key</string>
     <string name="enter_title">You must enter a title</string>
+    <string name="uploading">Saving...</string>
+    <string name="please_wait">Please wait</string>
+    <string name="upload_dialog_tag">UPLOAD_DIALOG_TAG</string>
+    <string name="cancel_upload">Cancel</string>
+    <string name="minimize">Minimize</string>
+    <string name="upload_prefix">upload of</string>
+    <string name="upload_suffix">successful</string>
+    <string name="upload_fail_suffix">failed</string>
 </resources>

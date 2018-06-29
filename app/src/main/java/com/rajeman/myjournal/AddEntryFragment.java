@@ -44,7 +44,7 @@ import static com.rajeman.myjournal.MainActivity.RC_SIGN_IN;
 
 public class AddEntryFragment extends Fragment {
     AppViewModel appViewModel;
-    //StatefulLayout statefulLayout;
+   // StatefulLayout mStatefulLayout;
     Fragment fragment;
     TextView dayTextView, wkDayTextView, monthYearTextView, timeTextView;
     ImageView entryImageView;
@@ -55,7 +55,9 @@ public class AddEntryFragment extends Fragment {
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     StorageReference photoReference;
+    UploadDialog mUploadDialog;
    JournalEntryLayoutBinding jEntryLayoutBinding;
+   UserEntry entry;
     public AddEntryFragment() {
         fragment = this;
     }
@@ -75,11 +77,13 @@ public class AddEntryFragment extends Fragment {
         textEditText = jEntryLayoutBinding.entryTextEditText;
         locationEditText = jEntryLayoutBinding.entryLocationEditText;
 
+
+
         if(savedInstanceState != null){
-              dayTextView.setText(savedInstanceState.getString(getString(R.string.day)));
-            wkDayTextView.setText(savedInstanceState.getString(getString(R.string.wk_day)));
-            monthYearTextView.setText(savedInstanceState.getString(getString(R.string.month_year)));
-            timeTextView.setText(savedInstanceState.getString(getString(R.string.time_txt)));
+          //    dayTextView.setText(savedInstanceState.getString(getString(R.string.day)));
+          //  wkDayTextView.setText(savedInstanceState.getString(getString(R.string.wk_day)));
+          //  monthYearTextView.setText(savedInstanceState.getString(getString(R.string.month_year)));
+          //  timeTextView.setText(savedInstanceState.getString(getString(R.string.time_txt)));
             titleEditText.setText(savedInstanceState.getString(getString(R.string.title_txt)));
             textEditText.setText(savedInstanceState.getString(getString(R.string.text_txt)));
             locationEditText.setText(savedInstanceState.getString(getString(R.string.location_txt)));
@@ -113,15 +117,27 @@ public class AddEntryFragment extends Fragment {
 
         appViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
        final Observer<Integer> uploadObserver = new Observer<Integer>() {
+
+
             @Override
             public void onChanged(@Nullable Integer uploadResult) {
-                if(uploadResult.equals  ((Integer)1)){
-
-                    Toast.makeText(fragment.getContext(), "upload successful", Toast.LENGTH_SHORT).show();
+                UploadDialog uploadDialog = (UploadDialog) getActivity().getSupportFragmentManager().findFragmentByTag(getString(R.string.upload_dialog_tag));
+               // final String uploadPrefix = getContext().getString(R.string.upload_prefix);
+                //final String uploadSuffix = getContext().getString(R.string.upload_suffix);
+                if(uploadResult != null && uploadResult.equals (NetworkUtils.UPLOAD_SUCCESS)){
+                  //  Toast.makeText(fragment.getContext(), "upload successful", Toast.LENGTH_SHORT).show();
+                    if (uploadDialog != null && uploadDialog.getDialog() != null && uploadDialog.getDialog().isShowing()) {
+                        uploadDialog.dismiss();
+                    }
+                    //Toast.makeText(getContext(),  uploadPrefix + " "+ entry.getTitle() + " " + uploadSuffix, Toast.LENGTH_SHORT).show();
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }
 
                 else{
-                    Toast.makeText(fragment.getContext(), "upload failed", Toast.LENGTH_SHORT).show();
+                    if (uploadDialog != null && uploadDialog.getDialog() != null && uploadDialog.getDialog().isShowing()) {
+                        uploadDialog.dismiss();
+                    }
+
                 }
 
             }
@@ -169,10 +185,10 @@ public class AddEntryFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(getString(R.string.day), dayTextView.getText().toString());
-        outState.putString(getString(R.string.wk_day), wkDayTextView.getText().toString());
-        outState.putString(getString(R.string.month_year), monthYearTextView.getText().toString());
-        outState.putString(getString(R.string.time_txt), timeTextView.getText().toString());
+     //   outState.putString(getString(R.string.day), dayTextView.getText().toString());
+      //  outState.putString(getString(R.string.wk_day), wkDayTextView.getText().toString());
+      //  outState.putString(getString(R.string.month_year), monthYearTextView.getText().toString());
+      //  outState.putString(getString(R.string.time_txt), timeTextView.getText().toString());
         outState.putString(getString(R.string.title_txt), titleEditText.getText().toString());
         outState.putString(getString(R.string.text_txt), textEditText.getText().toString());
         outState.putString(getString(R.string.location_txt), locationEditText.getText().toString());
@@ -230,9 +246,17 @@ public class AddEntryFragment extends Fragment {
         String story = textEditText.getText().toString();
         String location = locationEditText.getText().toString();
         UserEntry userEntry = new UserEntry(titleText, story, location, null );
-
+         showUploadDialog();
             appViewModel.saveEntry(userUid, userEntry, selectedImageUri);
     }
 
+    public void showUploadDialog() {
+        mUploadDialog = new UploadDialog();
+        mUploadDialog.setCancelable(false);
+        mUploadDialog.setArguments(new Bundle());
+        mUploadDialog.show(getActivity().getSupportFragmentManager(), getString(R.string.upload_dialog_tag));
+
+
+    }
 
 }

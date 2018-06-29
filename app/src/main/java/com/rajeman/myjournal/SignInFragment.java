@@ -44,6 +44,7 @@ public class SignInFragment extends Fragment {
             if(resultCode == RESULT_OK){
                 // open user diary entry
                 Toast.makeText(getContext(), "sign_in successful", Toast.LENGTH_SHORT).show();
+                //fragment should finish itself
                 getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 
             }

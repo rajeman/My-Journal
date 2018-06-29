@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/progress_bar_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/upload_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textStyle="bold"
+            android:textColor="@color/primary_text"
+            tools:text="Please Wait" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/primary_text" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <ProgressBar
+                android:id="@+id/indeterminateBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                />
+
+            <TextView
+                android:id="@+id/upload_dialog_txt_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                tools:text="Saving..." />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
