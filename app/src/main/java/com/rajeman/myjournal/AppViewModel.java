@@ -10,8 +10,9 @@ import java.util.List;
 
 public class AppViewModel extends AndroidViewModel {
 
-    MutableLiveData<List<UserEntry>> userEntries;
+    private MutableLiveData<List<UserEntry>> userEntries;
     private MutableLiveData<Integer> uploadResult;
+    private MutableLiveData<Integer> editResult;
 
     public AppViewModel(@NonNull Application application) {
         super(application);
@@ -33,6 +34,13 @@ public class AppViewModel extends AndroidViewModel {
             uploadResult = new SingleLiveEvent<>();
         }
         return uploadResult;
+    }
+
+    public MutableLiveData<Integer> getEditResult(){
+        if(editResult == null){
+            editResult = new SingleLiveEvent<>();
+        }
+        return editResult;
     }
     public void fetchUserEntries(String userUid) {
        NetworkUtils.fetchUserEntries(this, userUid);

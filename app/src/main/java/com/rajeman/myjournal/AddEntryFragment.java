@@ -77,7 +77,11 @@ public class AddEntryFragment extends Fragment {
         textEditText = jEntryLayoutBinding.entryTextEditText;
         locationEditText = jEntryLayoutBinding.entryLocationEditText;
 
-
+        DateUtils dateUtils = new DateUtils(System.currentTimeMillis());
+        wkDayTextView.setText(dateUtils.getWeekDay());
+        dayTextView.setText(dateUtils.getDay());
+        timeTextView.setText(dateUtils.getTime());
+        monthYearTextView.setText(dateUtils.getMonthYear());
 
         if(savedInstanceState != null){
           //    dayTextView.setText(savedInstanceState.getString(getString(R.string.day)));
@@ -143,7 +147,7 @@ public class AddEntryFragment extends Fragment {
             }
         };
 
-        appViewModel.getUploadResult().observe(this, uploadObserver);
+       // appViewModel.getUploadResult().observe(this, uploadObserver);
    // UserEntry userEntry = new UserEntry("title", "story", "location", "http://imagelink.com");
        // appViewModel.getUserEntry().observe(this, userEntryDataObserver);
       //  appViewModel.saveEntry(userUid, userEntry);
@@ -170,7 +174,6 @@ public class AddEntryFragment extends Fragment {
             case R.id.add_entry_image:
 
                 startPhotoSelectionIntent();
-                Toast.makeText(getContext(), "menu clicked", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.save_entry:
                 saveEntry();

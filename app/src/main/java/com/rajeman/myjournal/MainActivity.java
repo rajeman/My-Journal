@@ -22,7 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements  SignInCancelledNotifier, JournalEntriesFragment.FabClickListener {
+public class MainActivity extends AppCompatActivity
+        implements  SignInCancelledNotifier, JournalEntriesFragment.FabClickListener, EntriesAdapter.EntryClickNotifier {
 
     private FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mDatabaseReference;
@@ -60,16 +61,17 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
                          jFragment.setArguments(args);
 
                          //mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
-                         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, jFragment).commitAllowingStateLoss();
+                         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, jFragment,  getString(R.string.entries_fragment_tag)).commitAllowingStateLoss();
                      }
                      else{
                          //savedinstance state is not null and the user just logged in
                          if(isJustLoggedIn){
+
                              JournalEntriesFragment jFragment = new JournalEntriesFragment();
                              Bundle args = new Bundle();
                              args.putString(getString(R.string.user_uid_key), uid);
                              jFragment.setArguments(args);
-                             getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, jFragment).commitAllowingStateLoss();
+                             getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, jFragment,  getString(R.string.entries_fragment_tag)).commitAllowingStateLoss();
                          }
                      }
                 } else {
@@ -133,4 +135,19 @@ public class MainActivity extends AppCompatActivity implements  SignInCancelledN
         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, addEntryFragment).addToBackStack(null).commit();
 
     }
+
+    @Override
+    public void onNotify( int position) {
+
+        ViewEntryFragment viewEntryFragment = new ViewEntryFragment();
+        Bundle args = new Bundle();
+        args.putString(getString(R.string.user_uid_key), uid);
+        args.putInt(getString(R.string.adapter_position_key), position);
+        viewEntryFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, viewEntryFragment).addToBackStack(null).commit();
+
+
+    }
+
+
 }

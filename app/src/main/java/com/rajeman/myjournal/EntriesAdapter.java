@@ -19,12 +19,16 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
     private List<UserEntry> userEntryList;
     Fragment fragment;
     Context context;
-    private final int totalAttachmentImageViews = 4;
 
+    public interface EntryClickNotifier {
+        void onNotify( int position);
+    }
+    EntryClickNotifier entryClickNotifier;
     public EntriesAdapter(Fragment fragment, List<UserEntry> userEntryList) {
         this.fragment = fragment;
         this.userEntryList = userEntryList;
         context = fragment.getContext();
+        entryClickNotifier = (EntryClickNotifier) fragment.getActivity();
     }
 
     public class EntriesViewHolder extends RecyclerView.ViewHolder {
@@ -48,6 +52,13 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             timeTextView = itemView.findViewById(R.id.time_text_view);
             entryImage = itemView.findViewById(R.id.entry_image_view);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int adapterPosition = getAdapterPosition();
+                    entryClickNotifier.onNotify(adapterPosition);
+                }
+            });
         }
     }
 

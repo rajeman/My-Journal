@@ -77,7 +77,7 @@ public class JournalEntriesFragment extends Fragment {
         });
         userUid = getArguments().getString(getString(R.string.user_uid_key));
 
-        appViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
+        appViewModel = ViewModelProviders.of(this.getActivity()).get(AppViewModel.class);
         final Observer<List<UserEntry>> userEntryDataObserver = new Observer<List<UserEntry>>() {
             @Override
             public void onChanged(@Nullable List<UserEntry> userEntries) {
