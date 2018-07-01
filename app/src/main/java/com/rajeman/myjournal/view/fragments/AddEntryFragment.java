@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
+import com.rajeman.myjournal.databinding.AddEntryLayoutBinding;
 import com.rajeman.myjournal.view.dialogs.UploadDialog;
 import com.rajeman.myjournal.viewmodel.AppViewModel;
 import com.rajeman.myjournal.utils.DateUtils;
@@ -31,7 +32,7 @@ import com.rajeman.myjournal.GlideApp;
 import com.rajeman.myjournal.model.NetworkUtils;
 import com.rajeman.myjournal.R;
 import com.rajeman.myjournal.UserEntry;
-import com.rajeman.myjournal.databinding.JournalEntryLayoutBinding;
+
 
 import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -46,7 +47,7 @@ public class AddEntryFragment extends Fragment {
     private String userUid;
     private Uri selectedImageUri;
     private UploadDialog mUploadDialog;
-    private JournalEntryLayoutBinding jEntryLayoutBinding;
+    private AddEntryLayoutBinding jEntryLayoutBinding;
 
     public AddEntryFragment() {
         fragment = this;
@@ -57,7 +58,7 @@ public class AddEntryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        jEntryLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.journal_entry_layout, container, false);
+        jEntryLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.add_entry_layout, container, false);
         dayTextView = jEntryLayoutBinding.entryDayTextView;
         wkDayTextView = jEntryLayoutBinding.entryWkDayTextView;
         monthYearTextView = jEntryLayoutBinding.entryMonthYearTextView;

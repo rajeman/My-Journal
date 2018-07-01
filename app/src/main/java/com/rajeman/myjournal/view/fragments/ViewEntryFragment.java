@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gturedi.views.StatefulLayout;
+import com.rajeman.myjournal.databinding.ViewEntryLayoutBinding;
 import com.rajeman.myjournal.view.dialogs.DeleteDialog;
 import com.rajeman.myjournal.view.dialogs.UploadDialog;
 import com.rajeman.myjournal.viewmodel.AppViewModel;
@@ -31,7 +32,7 @@ import com.rajeman.myjournal.GlideApp;
 import com.rajeman.myjournal.model.NetworkUtils;
 import com.rajeman.myjournal.R;
 import com.rajeman.myjournal.UserEntry;
-import com.rajeman.myjournal.databinding.EntryViewBinding;
+
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class ViewEntryFragment extends Fragment {
     private boolean isStoryEditable = false;
     private boolean isTitleEditable = false;
     private int adapterPosition;
-    private EntryViewBinding mEntryViewBinding;
+    private ViewEntryLayoutBinding mEntryViewBinding;
     private UserEntry entry;
     private String entryId;
 
@@ -67,7 +68,7 @@ public class ViewEntryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        mEntryViewBinding = DataBindingUtil.inflate(inflater, R.layout.entry_view, container, false);
+        mEntryViewBinding = DataBindingUtil.inflate(inflater, R.layout.view_entry_layout, container, false);
         dayTextView = mEntryViewBinding.entryDayTextView;
         wkDayTextView = mEntryViewBinding.entryWkDayTextView;
         monthYearTextView = mEntryViewBinding.entryMonthYearTextView;
