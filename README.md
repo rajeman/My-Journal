@@ -5,3 +5,7 @@ My-Journal allows users to pen their thoughts, feelings or situation from anywhe
 # Getting Started
 Download and install on your Android smartphone. You can sign-in with your google account.
 
+# Requirements
+
+Android minimum SDk -16
+Google Play Services 
