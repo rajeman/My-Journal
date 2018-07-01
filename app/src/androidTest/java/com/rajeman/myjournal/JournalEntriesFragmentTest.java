@@ -5,7 +5,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 
 import com.rajeman.myjournal.view.MainActivity;
-import android.support.test.espresso.Espresso;
 
 import org.junit.Rule;
 import org.junit.Test;

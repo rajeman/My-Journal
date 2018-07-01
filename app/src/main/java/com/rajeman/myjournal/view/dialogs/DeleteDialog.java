@@ -15,12 +15,12 @@ import android.view.View;
 import com.rajeman.myjournal.R;
 import com.rajeman.myjournal.databinding.UploadDialogBinding;
 
+@SuppressWarnings("ConstantConditions")
 public class DeleteDialog extends DialogFragment {
 
 
     private UploadDialogBinding deleteDialogBinding;
-    private String message;
-    private String title;
+
     private AlertDialog dialog;
     private Fragment mFragment;
 

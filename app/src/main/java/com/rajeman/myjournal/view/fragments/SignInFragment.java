@@ -21,10 +21,10 @@ import static com.rajeman.myjournal.view.MainActivity.RC_SIGN_IN;
 /*this fragment takes care of sign-in by starting the firebase-authui activity
 * it is a work-around to prevent the sign-in page from continuously popping up when the user presses back button when not signed-in
  */
-
+@SuppressWarnings("ConstantConditions")
 public class SignInFragment extends Fragment {
 
-    SignInCancelledNotifier mNotifier;
+    private SignInCancelledNotifier mNotifier;
 
     public SignInFragment() {
     }

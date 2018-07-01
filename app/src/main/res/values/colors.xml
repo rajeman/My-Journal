@@ -5,35 +5,12 @@
     <color name="colorAccent">#FF4081</color>
 
 
-    <color name="primary">#009688</color>
-    <color name="primary_dark">#00796B</color>
-    <color name="primary_light">#B2DFDB</color>
-    <color name="accent">#8BC34A</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
-    <color name="divider">#BDBDBD</color>
-    <color name= "login_background">#EEEEEE</color>
     <color name="entry_edit_text_background">#EEEEEE</color>
 
     <!-- Color for homepage headlines -->
-    <color name="headline_0_color">#FC6644</color>
-    <color name="headline_1_color">#4A7BA7</color>
-    <color name="headline_2_color">#D93218</color>
-    <color name="headline_3_color">#04B4B3</color>
-    <color name="headline_4_color">#C03823</color>
-    <color name="headline_5_color">#F5A623</color>
-    <color name="headline_6_color">#E13A20</color>
-    <color name="headline_7_color">#10CAC9</color>
-    <color name="headline_8_color">#FF7D50</color>
-    <color name="headline_9_color">#E75F40</color>
-
-
-
-
-    <color name="headlines_text_color">#2B3D4D</color>
-
-
 
 
 </resources>

@@ -141,7 +141,8 @@
             android:maxHeight="75dp"
             android:maxWidth="100dp"
             tools:maxHeight="75dp"
-            tools:maxWidth="100dp" />
+            tools:maxWidth="100dp"
+            android:contentDescription="@string/entry_image_description"/>
 
 
     </LinearLayout>

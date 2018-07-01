@@ -24,17 +24,18 @@ import com.rajeman.myjournal.databinding.JournalEntriesRecyclerViewBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("ConstantConditions")
 public class JournalEntriesFragment extends Fragment {
 
-    AppViewModel appViewModel;
-    RecyclerView mRecyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
-    StatefulLayout statefulLayout;
-    Fragment fragment;
-    JournalEntriesRecyclerViewBinding jEntryBinding;
-    String userUid;
-    EntriesAdapter mAdapter;
-    FloatingActionButton fab;
+    private AppViewModel appViewModel;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private StatefulLayout statefulLayout;
+    private final Fragment fragment;
+    private JournalEntriesRecyclerViewBinding jEntryBinding;
+    private String userUid;
+    private EntriesAdapter mAdapter;
+    private FloatingActionButton fab;
 
     public interface FabClickListener{
 
@@ -75,6 +76,7 @@ public class JournalEntriesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //notify activity of click
+                assert fabClickListener != null;
                 fabClickListener.onFabClicked();
             }
         });

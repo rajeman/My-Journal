@@ -7,15 +7,16 @@ import com.google.firebase.database.ServerValue;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 @IgnoreExtraProperties
 public class UserEntry {
 
-    Map<String, Object> timeStamp;
-    String title;
-    String story;
-    String location;
-    String entryId;
-    String imageLink;
+    private Map<String, Object> timeStamp;
+    private String title;
+    private String story;
+    private String location;
+    private String entryId;
+    private String imageLink;
 
     public UserEntry() {
     }

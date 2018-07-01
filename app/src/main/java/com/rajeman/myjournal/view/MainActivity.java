@@ -27,11 +27,11 @@ public class MainActivity extends AppCompatActivity
         implements SignInCancelledNotifier, JournalEntriesFragment.FabClickListener, EntriesAdapter.EntryClickNotifier {
 
     private FirebaseDatabase mFirebaseDatabase;
-    DatabaseReference mDatabaseReference;
+    private DatabaseReference mDatabaseReference;
     private FirebaseAuth mFirebaseAuth;
     public static final int RC_SIGN_IN = 18;
     private boolean isJustLoggedIn = false;
-    String uid;
+    private String uid;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

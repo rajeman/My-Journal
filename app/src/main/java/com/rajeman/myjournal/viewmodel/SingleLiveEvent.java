@@ -9,7 +9,7 @@ import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class SingleLiveEvent<T> extends MutableLiveData<T> {
+class SingleLiveEvent<T> extends MutableLiveData<T> {
 
     private static final String TAG = "SingleLiveEvent";
 

@@ -32,18 +32,16 @@ import com.rajeman.myjournal.GlideApp;
 import com.rajeman.myjournal.model.NetworkUtils;
 import com.rajeman.myjournal.R;
 import com.rajeman.myjournal.UserEntry;
-
-
 import static android.app.Activity.RESULT_OK;
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
+@SuppressWarnings("ConstantConditions")
 public class AddEntryFragment extends Fragment {
     private AppViewModel appViewModel;
-    private Fragment fragment;
+    private final Fragment fragment;
     private TextView dayTextView, wkDayTextView, monthYearTextView, timeTextView;
     private ImageView entryImageView;
     private EditText titleEditText, textEditText, locationEditText;
-    private int RC_PHOTO_PICKER = 90;
+    private final int RC_PHOTO_PICKER = 90;
     private String userUid;
     private Uri selectedImageUri;
     private UploadDialog mUploadDialog;

@@ -3,10 +3,11 @@ package com.rajeman.myjournal.utils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateUtils {
-    private Calendar cal;
-    private Date date;
+    private final Calendar cal;
+    private final Date date;
     private SimpleDateFormat simpleDateFormat;
 
     public DateUtils(long timeStamp) {

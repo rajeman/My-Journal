@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class NetworkUtils {
-    public static final Integer UPLOAD_FAILED = 0;
+    private static final Integer UPLOAD_FAILED = 0;
     public static final Integer UPLOAD_SUCCESS = 1;
 
 
@@ -95,6 +95,7 @@ public class NetworkUtils {
                             DatabaseReference userReference = mDatabaseReference.child("users").child(userUid).child("entries");
                             String entryId = userReference.push().getKey();
                             entry.setEntryId(entryId);
+                            assert entryId != null;
                             userReference.child(entryId).setValue(entry).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -128,6 +129,7 @@ public class NetworkUtils {
             DatabaseReference userReference = mDatabaseReference.child("users").child(userUid).child("entries");
             String entryId = userReference.push().getKey();
             entry.setEntryId(entryId);
+            assert entryId != null;
             userReference.child(entryId).setValue(entry).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -147,7 +149,7 @@ public class NetworkUtils {
     }
 
     public void updateEntry(final AppViewModel appViewModel, final String userUid, final UserEntry entry, final Uri imageUri) {
-        final String oldImageLink = entry.getImageLink();
+        //final String oldImageLink = entry.getImageLink();
         final Context context = appViewModel.getApplication().getApplicationContext();
         final String updatePrefix = context.getString(R.string.update_prefix);
         final String updateSuffix = context.getString(R.string.upload_suffix);

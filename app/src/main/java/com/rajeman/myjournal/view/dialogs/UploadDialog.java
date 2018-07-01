@@ -17,11 +17,9 @@ import android.view.View;
 import com.rajeman.myjournal.R;
 import com.rajeman.myjournal.databinding.UploadDialogBinding;
 
-
+@SuppressWarnings("ConstantConditions")
 public class UploadDialog extends DialogFragment {
     private    UploadDialogBinding uploadDialogBinding;
-    private   String message;
-    private   String title;
     private    AlertDialog dialog;
     private  Fragment mFragment;
 

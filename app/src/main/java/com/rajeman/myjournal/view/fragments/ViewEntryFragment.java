@@ -32,23 +32,22 @@ import com.rajeman.myjournal.GlideApp;
 import com.rajeman.myjournal.model.NetworkUtils;
 import com.rajeman.myjournal.R;
 import com.rajeman.myjournal.UserEntry;
-
-
 import java.util.List;
-
 import static android.app.Activity.RESULT_OK;
 /* this fragment displays an entry that was selected from the journal-entries-list fragment*/
+
+@SuppressWarnings("ConstantConditions")
 public class ViewEntryFragment extends Fragment {
 
     private AppViewModel appViewModel;
     private AppViewModel entryViewModel;
     private StatefulLayout mStatefulLayout;
-    private Fragment fragment;
+    private final Fragment fragment;
     private TextView dayTextView, wkDayTextView, monthYearTextView, timeTextView;
     private ImageView entryImageView, locationEditIcon, titleEditIcon, storyEditIcon;
     private EditText titleEditText, storyEditText, locationEditText;
     private ImageView imageDeleteButton;
-    private int RC_PHOTO_PICKER = 90;
+    private final int RC_PHOTO_PICKER = 90;
     private String userUid;
     private Uri selectedImageUri;
     private String imageLink;
@@ -225,7 +224,7 @@ public class ViewEntryFragment extends Fragment {
 
     }
 
-    void hideKeyboard(EditText editText) {
+   private void hideKeyboard(EditText editText) {
         editText.requestFocus();
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -234,7 +233,7 @@ public class ViewEntryFragment extends Fragment {
     }
 
 
-    void showKeyboard(EditText editText) {
+   private void showKeyboard(EditText editText) {
 
         editText.requestFocus();
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -242,7 +241,7 @@ public class ViewEntryFragment extends Fragment {
 
     }
 
-    void setCursorToEnd(EditText et) {
+   private void setCursorToEnd(EditText et) {
 
         et.setSelection(et.getText().length());
     }

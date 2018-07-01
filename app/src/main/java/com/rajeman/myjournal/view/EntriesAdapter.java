@@ -20,14 +20,14 @@ import java.util.List;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesViewHolder> {
-    private List<UserEntry> userEntryList;
-    Fragment fragment;
-    Context context;
+    private final List<UserEntry> userEntryList;
+    private final Fragment fragment;
+    private final Context context;
 
     public interface EntryClickNotifier {
         void onNotify( int position);
     }
-    EntryClickNotifier entryClickNotifier;
+    private final EntryClickNotifier entryClickNotifier;
     public EntriesAdapter(Fragment fragment, List<UserEntry> userEntryList) {
         this.fragment = fragment;
         this.userEntryList = userEntryList;
@@ -37,16 +37,16 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 
     public class EntriesViewHolder extends RecyclerView.ViewHolder {
 
-        TextView  dayTextView;
-        TextView  weekDayTextView;
-        TextView  titleTextView;
-        TextView textSummaryTextView;
-        TextView locationTextView;
-        TextView monthYearTextView;
-        TextView timeTextView;
-        ImageView entryImage;
+        final TextView  dayTextView;
+        final TextView  weekDayTextView;
+        final TextView  titleTextView;
+        final TextView textSummaryTextView;
+        final TextView locationTextView;
+        final TextView monthYearTextView;
+        final TextView timeTextView;
+        final ImageView entryImage;
 
-        public EntriesViewHolder(View itemView) {
+        EntriesViewHolder(View itemView) {
             super(itemView);
             dayTextView = itemView.findViewById(R.id.day_text_view);
             weekDayTextView = itemView.findViewById(R.id.wk_day_text_view);
