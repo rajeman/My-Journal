@@ -1,7 +1,7 @@
 # My-Journal
 
-My-Journal allows users to pen their thoughts, feelings or anything about their situation from anywhere using their Android smartphone after sign in. They can also read previous entries and modify them.
+My-Journal allows users to pen their thoughts, feelings or situation from anywhere using their Android smartphone. Users can also read modify and delete previous entries.
 
 # Getting Started
-Download and install on your Android smartphone. You can create an sccount with your google email.
+Download and install on your Android smartphone. You can sign-in with your google account.
 
