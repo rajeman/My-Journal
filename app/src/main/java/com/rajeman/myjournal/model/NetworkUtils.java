@@ -254,7 +254,8 @@ public class NetworkUtils {
         }
 
     }
-    public void deleteEntry(final AppViewModel appViewModel, final String userUid, final UserEntry entry){
+
+    public void deleteEntry(final AppViewModel appViewModel, final String userUid, final UserEntry entry) {
         final Context context = appViewModel.getApplication().getApplicationContext();
         final String deletePrefix = context.getString(R.string.delete_prefix);
         final String deleteSuffix = context.getString(R.string.upload_suffix);

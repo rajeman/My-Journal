@@ -1,7 +1,7 @@
 package com.rajeman.myjournal;
 
 import com.google.firebase.database.FirebaseDatabase;
-// this class e the fire
+// this class enables firebase persistence.
 public class MyFireBaseApp extends android.app.Application {
 
     @Override
