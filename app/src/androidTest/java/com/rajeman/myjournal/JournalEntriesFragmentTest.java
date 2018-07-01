@@ -23,6 +23,7 @@ public class JournalEntriesFragmentTest {
 
     @Rule public ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
+    //The below tests will only run after the user has authenticated as the stated views are only available after sign-in
 
     @Test
     public  void clickFloatingActionButton_displaysAddEntryFragment(){
