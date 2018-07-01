@@ -1,6 +1,5 @@
-package com.rajeman.myjournal;
+package com.rajeman.myjournal.view.fragments;
 
-import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -23,36 +22,42 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.gturedi.views.StatefulLayout;
+import com.rajeman.myjournal.view.dialogs.DeleteDialog;
+import com.rajeman.myjournal.view.dialogs.UploadDialog;
+import com.rajeman.myjournal.viewmodel.AppViewModel;
+import com.rajeman.myjournal.utils.DateUtils;
+import com.rajeman.myjournal.GlideApp;
+import com.rajeman.myjournal.model.NetworkUtils;
+import com.rajeman.myjournal.R;
+import com.rajeman.myjournal.UserEntry;
 import com.rajeman.myjournal.databinding.EntryViewBinding;
 
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-
+/* this fragment displays an entry that was selected from the journal-entries-list fragment*/
 public class ViewEntryFragment extends Fragment {
 
-    AppViewModel appViewModel;
-    AppViewModel entryViewModel;
-    StatefulLayout mStatefulLayout;
-    Fragment fragment;
-    TextView dayTextView, wkDayTextView, monthYearTextView, timeTextView;
-    ImageView entryImageView, locationEditIcon, titleEditIcon, storyEditIcon;
-    EditText titleEditText, storyEditText, locationEditText;
-    ImageView imageDeleteButton;
-    int RC_PHOTO_PICKER = 90;
-    String userUid;
-    Uri selectedImageUri;
-    String imageLink;
+    private AppViewModel appViewModel;
+    private AppViewModel entryViewModel;
+    private StatefulLayout mStatefulLayout;
+    private Fragment fragment;
+    private TextView dayTextView, wkDayTextView, monthYearTextView, timeTextView;
+    private ImageView entryImageView, locationEditIcon, titleEditIcon, storyEditIcon;
+    private EditText titleEditText, storyEditText, locationEditText;
+    private ImageView imageDeleteButton;
+    private int RC_PHOTO_PICKER = 90;
+    private String userUid;
+    private Uri selectedImageUri;
+    private String imageLink;
     private boolean isLocationEditable = false;
     private boolean isStoryEditable = false;
     private boolean isTitleEditable = false;
     private int adapterPosition;
-    EntryViewBinding mEntryViewBinding;
-    UserEntry entry;
-    String entryId;
+    private EntryViewBinding mEntryViewBinding;
+    private UserEntry entry;
+    private String entryId;
 
     public ViewEntryFragment() {
         fragment = this;
@@ -78,7 +83,7 @@ public class ViewEntryFragment extends Fragment {
         mStatefulLayout = mEntryViewBinding.viewEntryStateful;
 
         configureEditTexts();
-         //set clicklistener for image delete button
+         //set click listener for image delete button
         imageDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

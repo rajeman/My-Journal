@@ -1,4 +1,4 @@
-package com.rajeman.myjournal;
+package com.rajeman.myjournal.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,7 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Calendar;
+import com.rajeman.myjournal.GlideApp;
+import com.rajeman.myjournal.R;
+import com.rajeman.myjournal.UserEntry;
+import com.rajeman.myjournal.utils.DateUtils;
+
 import java.util.List;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -41,6 +45,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
         TextView monthYearTextView;
         TextView timeTextView;
         ImageView entryImage;
+
         public EntriesViewHolder(View itemView) {
             super(itemView);
             dayTextView = itemView.findViewById(R.id.day_text_view);
@@ -74,7 +79,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
     @Override
     public void onBindViewHolder(@NonNull EntriesViewHolder holder, int position) {
 
-        String day, wkDay, title, summary, location, monthYear;
+
         UserEntry userEntry = userEntryList.get(position);
         holder.textSummaryTextView.setText(userEntry.getStory());
         holder.locationTextView.setText(userEntry.getLocation());

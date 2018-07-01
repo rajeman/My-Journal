@@ -1,10 +1,14 @@
-package com.rajeman.myjournal;
+package com.rajeman.myjournal.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+
+import com.rajeman.myjournal.model.NetworkUtils;
+import com.rajeman.myjournal.UserEntry;
+
 import java.util.List;
 
 

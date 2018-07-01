@@ -1,4 +1,4 @@
-package com.rajeman.myjournal;
+package com.rajeman.myjournal.view.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -13,9 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.gturedi.views.StatefulLayout;
+import com.rajeman.myjournal.viewmodel.AppViewModel;
+import com.rajeman.myjournal.view.EntriesAdapter;
+import com.rajeman.myjournal.R;
+import com.rajeman.myjournal.UserEntry;
 import com.rajeman.myjournal.databinding.JournalEntriesRecyclerViewBinding;
 
 import java.util.ArrayList;

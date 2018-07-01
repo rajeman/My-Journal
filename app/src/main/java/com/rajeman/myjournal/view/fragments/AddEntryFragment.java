@@ -1,4 +1,4 @@
-package com.rajeman.myjournal;
+package com.rajeman.myjournal.view.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -9,9 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,33 +24,29 @@ import android.widget.Toast;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.gturedi.views.StatefulLayout;
-import com.rajeman.myjournal.databinding.JournalEntriesRecyclerViewBinding;
+import com.rajeman.myjournal.view.dialogs.UploadDialog;
+import com.rajeman.myjournal.viewmodel.AppViewModel;
+import com.rajeman.myjournal.utils.DateUtils;
+import com.rajeman.myjournal.GlideApp;
+import com.rajeman.myjournal.model.NetworkUtils;
+import com.rajeman.myjournal.R;
+import com.rajeman.myjournal.UserEntry;
 import com.rajeman.myjournal.databinding.JournalEntryLayoutBinding;
-
-import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-import static com.rajeman.myjournal.MainActivity.RC_SIGN_IN;
 
 public class AddEntryFragment extends Fragment {
-    AppViewModel appViewModel;
-    Fragment fragment;
-    TextView dayTextView, wkDayTextView, monthYearTextView, timeTextView;
-    ImageView entryImageView;
-    EditText titleEditText, textEditText, locationEditText;
-    int RC_PHOTO_PICKER = 90;
-    String userUid;
-    Uri selectedImageUri;
-    UploadDialog mUploadDialog;
-    JournalEntryLayoutBinding jEntryLayoutBinding;
+    private AppViewModel appViewModel;
+    private Fragment fragment;
+    private TextView dayTextView, wkDayTextView, monthYearTextView, timeTextView;
+    private ImageView entryImageView;
+    private EditText titleEditText, textEditText, locationEditText;
+    private int RC_PHOTO_PICKER = 90;
+    private String userUid;
+    private Uri selectedImageUri;
+    private UploadDialog mUploadDialog;
+    private JournalEntryLayoutBinding jEntryLayoutBinding;
 
     public AddEntryFragment() {
         fragment = this;
@@ -79,13 +73,11 @@ public class AddEntryFragment extends Fragment {
         timeTextView.setText(dateUtils.getTime());
         monthYearTextView.setText(dateUtils.getMonthYear());
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
 
             titleEditText.setText(savedInstanceState.getString(getString(R.string.title_txt)));
             textEditText.setText(savedInstanceState.getString(getString(R.string.text_txt)));
             locationEditText.setText(savedInstanceState.getString(getString(R.string.location_txt)));
-
-
 
 
         }
@@ -99,7 +91,7 @@ public class AddEntryFragment extends Fragment {
         //set action bar title
         getActivity().setTitle(getString(R.string.add_an_entry));
         userUid = getArguments().getString(getString(R.string.user_uid_key));
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             String retrievedImgUri = savedInstanceState.getString(getString(R.string.entry_image));
             if (retrievedImgUri != null) {
                 selectedImageUri = Uri.parse(retrievedImgUri);
@@ -114,23 +106,21 @@ public class AddEntryFragment extends Fragment {
 
 
         appViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
-       final Observer<Integer> uploadObserver = new Observer<Integer>() {
+        final Observer<Integer> uploadObserver = new Observer<Integer>() {
 
 
             @Override
             public void onChanged(@Nullable Integer uploadResult) {
                 UploadDialog uploadDialog = (UploadDialog) getActivity().getSupportFragmentManager().findFragmentByTag(getString(R.string.upload_dialog_tag));
 
-                if(uploadResult != null && uploadResult.equals (NetworkUtils.UPLOAD_SUCCESS)){
-                  //  Toast.makeText(fragment.getContext(), "upload successful", Toast.LENGTH_SHORT).show();
+                if (uploadResult != null && uploadResult.equals(NetworkUtils.UPLOAD_SUCCESS)) {
+                    //  Toast.makeText(fragment.getContext(), "upload successful", Toast.LENGTH_SHORT).show();
                     if (uploadDialog != null && uploadDialog.getDialog() != null && uploadDialog.getDialog().isShowing()) {
                         uploadDialog.dismiss();
                     }
                     //Toast.makeText(getContext(),  uploadPrefix + " "+ entry.getTitle() + " " + uploadSuffix, Toast.LENGTH_SHORT).show();
                     getActivity().getSupportFragmentManager().popBackStack();
-                }
-
-                else{
+                } else {
                     if (uploadDialog != null && uploadDialog.getDialog() != null && uploadDialog.getDialog().isShowing()) {
                         uploadDialog.dismiss();
                     }
@@ -141,7 +131,7 @@ public class AddEntryFragment extends Fragment {
         };
 
 
-       appViewModel.getUploadResult().observe(this, uploadObserver);
+        appViewModel.getUploadResult().observe(this, uploadObserver);
 
 
     }
@@ -162,7 +152,7 @@ public class AddEntryFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.add_entry_image:
 
                 startPhotoSelectionIntent();
@@ -184,7 +174,7 @@ public class AddEntryFragment extends Fragment {
         outState.putString(getString(R.string.title_txt), titleEditText.getText().toString());
         outState.putString(getString(R.string.text_txt), textEditText.getText().toString());
         outState.putString(getString(R.string.location_txt), locationEditText.getText().toString());
-        if(selectedImageUri!= null){
+        if (selectedImageUri != null) {
 
             outState.putString(getString(R.string.entry_image), selectedImageUri.toString());
         }
@@ -195,56 +185,52 @@ public class AddEntryFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(requestCode == RC_PHOTO_PICKER){
+        if (requestCode == RC_PHOTO_PICKER) {
             //IdpResponse response = IdpResponse.fromResultIntent(data);
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 // open user diary entry
-                    selectedImageUri = data.getData();
-               //quick fix to make glide load image properly
+                selectedImageUri = data.getData();
+                //quick fix to make glide load image properly
                 GlideApp.with(fragment).load(selectedImageUri).into(entryImageView);
                 GlideApp.with(fragment).clear(entryImageView);
                 GlideApp.with(fragment).load(selectedImageUri).into(entryImageView);
 
-                    }
-                   else{
-                        Toast.makeText(getContext(), getString(R.string.cannot_load_image), Toast.LENGTH_SHORT).show();
-                    }
-
-
+            } else {
+                Toast.makeText(getContext(), getString(R.string.cannot_load_image), Toast.LENGTH_SHORT).show();
             }
 
-            else{
 
-                Toast.makeText(getContext(), getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show();
+        } else {
 
-            }
+            Toast.makeText(getContext(), getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show();
+
         }
+    }
 
 
-    private void startPhotoSelectionIntent(){
+    private void startPhotoSelectionIntent() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_intent)), RC_PHOTO_PICKER);
 
 
-
     }
 
-    private void saveEntry(){
+    private void saveEntry() {
         String titleText = titleEditText.getText().toString();
-        if(titleText.trim().isEmpty()){
+        if (titleText.trim().isEmpty()) {
             Toast.makeText(getContext(), getString(R.string.enter_title), Toast.LENGTH_SHORT).show();
             return;
         }
         String story = textEditText.getText().toString();
         String location = locationEditText.getText().toString();
-        UserEntry userEntry = new UserEntry(titleText, story, location, null );
-         showUploadDialog();
-            appViewModel.saveEntry(userUid, userEntry, selectedImageUri);
+        UserEntry userEntry = new UserEntry(titleText, story, location, null);
+        showUploadDialog();
+        appViewModel.saveEntry(userUid, userEntry, selectedImageUri);
     }
 
-    public void showUploadDialog() {
+    private void showUploadDialog() {
         mUploadDialog = new UploadDialog();
         mUploadDialog.setCancelable(false);
         mUploadDialog.setArguments(new Bundle());

@@ -1,9 +1,8 @@
-package com.rajeman.myjournal;
+package com.rajeman.myjournal.model;
 
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,6 +15,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.rajeman.myjournal.R;
+import com.rajeman.myjournal.UserEntry;
+import com.rajeman.myjournal.viewmodel.AppViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,29 +1,30 @@
-package com.rajeman.myjournal;
+package com.rajeman.myjournal.view;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.ErrorCodes;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.signin.SignIn;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.rajeman.myjournal.R;
+import com.rajeman.myjournal.view.fragments.SignInCancelledNotifier;
+import com.rajeman.myjournal.view.fragments.AddEntryFragment;
+import com.rajeman.myjournal.view.fragments.JournalEntriesFragment;
+import com.rajeman.myjournal.view.fragments.SignInFragment;
+import com.rajeman.myjournal.view.fragments.ViewEntryFragment;
 
-import java.util.Arrays;
+/*this is the master and only activity (with exception of firebase authui sign-in activity)*/
+/*this activity takes care of authentication and displaying the other pages(fragments)*/
 
 public class MainActivity extends AppCompatActivity
-        implements  SignInCancelledNotifier, JournalEntriesFragment.FabClickListener, EntriesAdapter.EntryClickNotifier {
+        implements SignInCancelledNotifier, JournalEntriesFragment.FabClickListener, EntriesAdapter.EntryClickNotifier {
 
     private FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mDatabaseReference;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSignInCancelled() {
-
+//closes the actvity when user cancels sign in. it is called by the signin fragment
         finish();
     }
 
@@ -121,7 +122,8 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
 
     }
-
+//this is the method that is called when floating action button is clicked on the journal-entries-fragment
+//it starts the add-entry-fragment and puts the user uid as an argument
     @Override
     public void onFabClicked() {
         //Toast.makeText(this, "fab clicked", Toast.LENGTH_SHORT).show();
@@ -135,6 +137,9 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, addEntryFragment).addToBackStack(null).commit();
 
     }
+//this is the method that is called when an entry is clicked on the journal-entries-list fragment.
+// it takes the position of the entry and starts the view-entry fragment. it  puts the position clicked and
+// the userId as  arguments
 
     @Override
     public void onNotify( int position) {

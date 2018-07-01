@@ -1,4 +1,4 @@
-package com.rajeman.myjournal;
+package com.rajeman.myjournal.viewmodel;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;
