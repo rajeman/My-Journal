@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         isJustLoggedIn = false;
+
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity
         args.putString(getString(R.string.user_uid_key), uid);
         addEntryFragment.setArguments(args);
 
-        //mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
+
         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, addEntryFragment).addToBackStack(null).commit();
 
     }

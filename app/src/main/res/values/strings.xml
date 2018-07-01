@@ -44,7 +44,7 @@
     <string name="no_image_selected">no image selected</string>
     <string name="sign_in_successful">sign-in successful</string>
     <string name="sign_in_cancelled">sign-in cancelled</string>
-    <string name="need_network">You need active internet connection to sign-in</string>
+    <string name="need_network">You need active internet connection</string>
     <string name="no_entries">There are no entries</string>
     <string name="entries_fragment_title">Entries</string>
     <string name="add_an_entry">Add Entry</string>
