@@ -7,5 +7,5 @@ Download and install on your Android smartphone. You can sign-in with your googl
 
 # Requirements
 
-Android minimum SDk -16
+Android minimum SDk -16 \n
 Google Play Services 
