@@ -3,6 +3,7 @@ package com.rajeman.myjournal;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -15,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,10 +25,8 @@ public class NetworkUtils {
     public static final Integer UPLOAD_FAILED = 0;
     public static final Integer UPLOAD_SUCCESS = 1;
 
-    private static UploadTask mUploadTask;
 
-
-    public static void fetchUserEntries(final AppViewModel appViewModel, String userUid) {
+    public void fetchUserEntries(final AppViewModel appViewModel, String userUid) {
 
         FirebaseDatabase mFirebaseDatabase;
         DatabaseReference mDatabaseReference;
@@ -56,7 +56,7 @@ public class NetworkUtils {
 
     }
 
-    public static void saveEntry(final AppViewModel appViewModel, final String userUid, final UserEntry entry, Uri imageUri) {
+    public void saveEntry(final AppViewModel appViewModel, final String userUid, final UserEntry entry, Uri imageUri) {
         final Context context = appViewModel.getApplication().getApplicationContext();
         final String uploadPrefix = context.getString(R.string.upload_prefix);
         final String uploadSuffix = context.getString(R.string.upload_suffix);
@@ -64,12 +64,11 @@ public class NetworkUtils {
         if (imageUri != null) {
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference storageReference = firebaseStorage.getReference();
-           // Uri imgUrl;
+            // Uri imgUrl;
             final StorageReference photoReference = storageReference.child("users")
                     .child(userUid).child("photo").child(UUID.randomUUID().toString());
 
-          mUploadTask =  photoReference.putFile(imageUri);
-                 mUploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            photoReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //start text upload
@@ -98,7 +97,7 @@ public class NetworkUtils {
                                 @Override
                                 public void onSuccess(Void aVoid) {
 
-                                    Toast.makeText(context,  uploadPrefix + " \""   + entry.getTitle()  + "\" " + uploadSuffix, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, uploadPrefix + " \"" + entry.getTitle() + "\" " + uploadSuffix, Toast.LENGTH_SHORT).show();
                                     appViewModel.getUploadResult().setValue(UPLOAD_SUCCESS);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -114,7 +113,7 @@ public class NetworkUtils {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context,  uploadPrefix + " \""   + entry.getTitle()  + "\" " + uploadFailSuffix, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, uploadPrefix + " \"" + entry.getTitle() + "\" " + uploadFailSuffix, Toast.LENGTH_SHORT).show();
                     appViewModel.getUploadResult().setValue(UPLOAD_FAILED);
                 }
             });
@@ -130,13 +129,13 @@ public class NetworkUtils {
             userReference.child(entryId).setValue(entry).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Toast.makeText(context,  uploadPrefix + " \""   + entry.getTitle()  + "\" " + uploadSuffix, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, uploadPrefix + " \"" + entry.getTitle() + "\" " + uploadSuffix, Toast.LENGTH_SHORT).show();
                     appViewModel.getUploadResult().setValue(UPLOAD_SUCCESS);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context,  uploadPrefix + " \""   + entry.getTitle()  + "\" " + uploadFailSuffix, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, uploadPrefix + " \"" + entry.getTitle() + "\" " + uploadFailSuffix, Toast.LENGTH_SHORT).show();
                     appViewModel.getUploadResult().setValue(UPLOAD_FAILED);
                 }
             });
@@ -145,9 +144,136 @@ public class NetworkUtils {
 
     }
 
-    public static void cancelUpload(AppViewModel appViewModel){
-      if(mUploadTask != null && mUploadTask.isInProgress()){
-          mUploadTask.cancel();
-      }
+    public void updateEntry(final AppViewModel appViewModel, final String userUid, final UserEntry entry, final Uri imageUri) {
+        final String oldImageLink = entry.getImageLink();
+        final Context context = appViewModel.getApplication().getApplicationContext();
+        final String updatePrefix = context.getString(R.string.update_prefix);
+        final String updateSuffix = context.getString(R.string.upload_suffix);
+        final String updateFailSuffix = context.getString(R.string.upload_fail_suffix);
+        if (imageUri != null) {
+            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference storageReference = firebaseStorage.getReference();
+
+            final StorageReference photoReference = storageReference.child("users")
+                    .child(userUid).child("photo").child(UUID.randomUUID().toString());
+
+            photoReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    //start text upload
+                    photoReference.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            appViewModel.getUpdateResult().setValue(UPLOAD_FAILED);
+                            e.printStackTrace();
+                            // Log.e("downloadurlfailure" , "" +  e.printStackTrace())
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            //imgUrl = uri;
+
+                            Uri imgUrl = uri;
+                            String imgStringUrl = imgUrl.toString();
+                            entry.setImageLink(imgStringUrl);
+
+                            FirebaseDatabase mFirebaseDatabase;
+                            DatabaseReference mDatabaseReference;
+                            mFirebaseDatabase = FirebaseDatabase.getInstance();
+                            mDatabaseReference = mFirebaseDatabase.getReference();
+                            DatabaseReference userReference = mDatabaseReference.child("users").child(userUid).child("entries");
+                            //get the old entry id and overwrite using setValue
+                            String entryId = entry.getEntryId();
+                            userReference.child(entryId).setValue(entry).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                    Toast.makeText(context, updatePrefix + " \"" + entry.getTitle() + "\" " + updateSuffix, Toast.LENGTH_SHORT).show();
+                                    appViewModel.getUpdateResult().setValue(UPLOAD_SUCCESS);
+                                    //delete the old image
+
+                            /*        StorageReference deleteRef = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageLink);
+                                    deleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            // File deleted successfully
+
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            // Uh-oh, an error occurred!
+
+                                        }
+                                    });*/
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    appViewModel.getUpdateResult().setValue(UPLOAD_FAILED);
+                                    e.printStackTrace();
+                                }
+                            });
+                        }
+                    });
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, updatePrefix + " \"" + entry.getTitle() + "\" " + updateFailSuffix, Toast.LENGTH_SHORT).show();
+                    appViewModel.getUpdateResult().setValue(UPLOAD_FAILED);
+                }
+            });
+        } else {
+
+            FirebaseDatabase mFirebaseDatabase;
+            DatabaseReference mDatabaseReference;
+            mFirebaseDatabase = FirebaseDatabase.getInstance();
+            mDatabaseReference = mFirebaseDatabase.getReference();
+            DatabaseReference userReference = mDatabaseReference.child("users").child(userUid).child("entries");
+            String entryId = entry.getEntryId();
+            userReference.child(entryId).setValue(entry).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(context, updatePrefix + " \"" + entry.getTitle() + "\" " + updateSuffix, Toast.LENGTH_SHORT).show();
+                    appViewModel.getUpdateResult().setValue(UPLOAD_SUCCESS);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, updatePrefix + " \"" + entry.getTitle() + "\" " + updateFailSuffix, Toast.LENGTH_SHORT).show();
+                    appViewModel.getUpdateResult().setValue(UPLOAD_FAILED);
+                    e.printStackTrace();
+                }
+            });
+        }
+
+    }
+    public void deleteEntry(final AppViewModel appViewModel, final String userUid, final UserEntry entry){
+        final Context context = appViewModel.getApplication().getApplicationContext();
+        final String deletePrefix = context.getString(R.string.delete_prefix);
+        final String deleteSuffix = context.getString(R.string.upload_suffix);
+        final String deleteFailSuffix = context.getString(R.string.upload_fail_suffix);
+        FirebaseDatabase mFirebaseDatabase;
+        DatabaseReference mDatabaseReference;
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseDatabase.getReference();
+        DatabaseReference userReference = mDatabaseReference.child("users").child(userUid).child("entries");
+        String entryId = entry.getEntryId();
+        userReference.child(entryId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                Toast.makeText(context, deletePrefix + " \"" + entry.getTitle() + "\" " + deleteSuffix, Toast.LENGTH_SHORT).show();
+                appViewModel.getDeleteResult().setValue(UPLOAD_SUCCESS);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, deletePrefix + " \"" + entry.getTitle() + "\" " + deleteFailSuffix, Toast.LENGTH_SHORT).show();
+                appViewModel.getDeleteResult().setValue(UPLOAD_FAILED);
+            }
+        });
     }
 }

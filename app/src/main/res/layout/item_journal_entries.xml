@@ -31,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:textSize="17sp"
+                android:maxLines="1"
                 tools:text="Tue" />
 
             <TextView
@@ -39,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:textSize="25sp"
+                android:maxLines="1"
                 tools:text="26" />
 
             <TextView
@@ -47,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:textSize="13sp"
+                android:maxLines="1"
                 tools:text="10:45pm" />
 
 
@@ -64,20 +67,24 @@
                 android:id="@+id/entry_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="start"
                 android:layout_marginBottom="5dp"
                 android:textColor="@color/primary_text"
                 android:textSize="17sp"
                 android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1"
                 tools:text="A very Good Day" />
 
             <TextView
                 android:id="@+id/entry_text_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:maxLines="2"
+
+                android:layout_gravity="start"
                 android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="2"
                 tools:text="On a very Hot afternoon of after making a nice meal
 for my self" />
 
@@ -96,7 +103,8 @@ for my self" />
                     android:layout_marginRight="5dp"
                     android:layout_marginEnd="5dp"
                     android:textSize="17sp"
-                    android:maxLength="6"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     tools:text="Ibadan" />
 
                 <TextView
@@ -106,6 +114,8 @@ for my self" />
                     android:layout_gravity="end"
                     android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textSize="17sp"
                     tools:text="June, 2018" />
 
@@ -128,7 +138,7 @@ for my self" />
                 android:layout_gravity="center_vertical"
                 android:id="@+id/entry_image_view"
                 android:adjustViewBounds="true"
-                android:maxHeight="100dp"
+                android:maxHeight="75dp"
                 android:maxWidth="100dp"
                 tools:maxHeight="100dp"
                 tools:maxWidth="100dp"

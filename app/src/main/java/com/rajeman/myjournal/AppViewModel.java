@@ -12,7 +12,8 @@ public class AppViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<UserEntry>> userEntries;
     private MutableLiveData<Integer> uploadResult;
-    private MutableLiveData<Integer> editResult;
+    private MutableLiveData<Integer> updateResult;
+    private MutableLiveData<Integer> deleteResult;
 
     public AppViewModel(@NonNull Application application) {
         super(application);
@@ -36,18 +37,42 @@ public class AppViewModel extends AndroidViewModel {
         return uploadResult;
     }
 
-    public MutableLiveData<Integer> getEditResult(){
-        if(editResult == null){
-            editResult = new SingleLiveEvent<>();
+    public MutableLiveData<Integer> getUpdateResult(){
+        if(updateResult == null){
+            updateResult = new SingleLiveEvent<>();
         }
-        return editResult;
+        return updateResult;
     }
+
+    public MutableLiveData<Integer> getDeleteResult(){
+        if(deleteResult == null){
+            deleteResult = new SingleLiveEvent<>();
+        }
+        return deleteResult;
+    }
+
+
     public void fetchUserEntries(String userUid) {
-       NetworkUtils.fetchUserEntries(this, userUid);
+        NetworkUtils networkUtils = new NetworkUtils();
+        networkUtils.fetchUserEntries(this, userUid);
     }
 
     public void saveEntry(final String userUid, final UserEntry entry, Uri imageUri){
 
-      NetworkUtils.saveEntry(this, userUid, entry, imageUri );
+        NetworkUtils networkUtils = new NetworkUtils();
+      networkUtils.saveEntry(this, userUid, entry, imageUri );
+    }
+    public void updateEntry(String userId, UserEntry userEntry, Uri imageUri){
+
+        NetworkUtils networkUtils = new NetworkUtils();
+
+        networkUtils.updateEntry(this,  userId, userEntry, imageUri);
+    }
+
+    public void deleteEntry( final String userUid, final UserEntry entry){
+
+        NetworkUtils networkUtils = new NetworkUtils();
+
+        networkUtils.deleteEntry(this,  userUid, entry);
     }
 }

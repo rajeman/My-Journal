@@ -29,8 +29,6 @@ public class MainActivity extends AppCompatActivity
     DatabaseReference mDatabaseReference;
     private FirebaseAuth mFirebaseAuth;
     public static final int RC_SIGN_IN = 18;
-    public static final int RC_SIGN_IN_SUCCESS = 19;
-    public static final int RC_SIGN_IN_FAIL = 10;
     private boolean isJustLoggedIn = false;
     String uid;
 
@@ -38,7 +36,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //init firebase fields
         isJustLoggedIn = false;
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference();
@@ -53,16 +50,17 @@ public class MainActivity extends AppCompatActivity
                     //we are signed in
                      uid = user.getUid();
 
-                     //if it is a configuration change, don't reload the fragment. Android OS does that
+                     //if it is not a configuration change and we are logged in, then display the journal-entries-list
                      if(savedInstanceState == null) {
                          JournalEntriesFragment jFragment = new JournalEntriesFragment();
                          Bundle args = new Bundle();
                          args.putString(getString(R.string.user_uid_key), uid);
                          jFragment.setArguments(args);
 
-                         //mDatabaseReference.child("users").child(uid).push().setValue("this is my first post");
+
                          getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, jFragment,  getString(R.string.entries_fragment_tag)).commitAllowingStateLoss();
                      }
+                     //if it is a configuration change, don't reload the fragment. Android OS does that
                      else{
                          //savedinstance state is not null and the user just logged in
                          if(isJustLoggedIn){
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFabClicked() {
-        Toast.makeText(this, "fab clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "fab clicked", Toast.LENGTH_SHORT).show();
 
         AddEntryFragment addEntryFragment = new AddEntryFragment();
         Bundle args = new Bundle();

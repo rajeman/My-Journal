@@ -71,10 +71,12 @@ public class JournalEntriesFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //notifyactivity of click
+                //notify activity of click
                 fabClickListener.onFabClicked();
             }
         });
+         //set actionbar title
+        getActivity().setTitle(getString(R.string.entries_fragment_title));
         userUid = getArguments().getString(getString(R.string.user_uid_key));
 
         appViewModel = ViewModelProviders.of(this.getActivity()).get(AppViewModel.class);
@@ -93,13 +95,13 @@ public class JournalEntriesFragment extends Fragment {
                     });
                 }
                 else if (userEntries.isEmpty()){
-                    statefulLayout.showEmpty();
+                    statefulLayout.showEmpty(getString(R.string.no_entries));
                 }
                 else{
                     mAdapter.setNewItems(userEntries);
                     mAdapter.notifyDataSetChanged();
                     statefulLayout.showContent();
-                    Toast.makeText(fragment.getContext(), "got something", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(fragment.getContext(), "got something", Toast.LENGTH_SHORT).show();
                 }
 
             }

@@ -44,7 +44,6 @@ import static com.rajeman.myjournal.MainActivity.RC_SIGN_IN;
 
 public class AddEntryFragment extends Fragment {
     AppViewModel appViewModel;
-   // StatefulLayout mStatefulLayout;
     Fragment fragment;
     TextView dayTextView, wkDayTextView, monthYearTextView, timeTextView;
     ImageView entryImageView;
@@ -52,12 +51,9 @@ public class AddEntryFragment extends Fragment {
     int RC_PHOTO_PICKER = 90;
     String userUid;
     Uri selectedImageUri;
-    FirebaseStorage firebaseStorage;
-    StorageReference storageReference;
-    StorageReference photoReference;
     UploadDialog mUploadDialog;
-   JournalEntryLayoutBinding jEntryLayoutBinding;
-   UserEntry entry;
+    JournalEntryLayoutBinding jEntryLayoutBinding;
+
     public AddEntryFragment() {
         fragment = this;
     }
@@ -84,10 +80,7 @@ public class AddEntryFragment extends Fragment {
         monthYearTextView.setText(dateUtils.getMonthYear());
 
         if(savedInstanceState != null){
-          //    dayTextView.setText(savedInstanceState.getString(getString(R.string.day)));
-          //  wkDayTextView.setText(savedInstanceState.getString(getString(R.string.wk_day)));
-          //  monthYearTextView.setText(savedInstanceState.getString(getString(R.string.month_year)));
-          //  timeTextView.setText(savedInstanceState.getString(getString(R.string.time_txt)));
+
             titleEditText.setText(savedInstanceState.getString(getString(R.string.title_txt)));
             textEditText.setText(savedInstanceState.getString(getString(R.string.text_txt)));
             locationEditText.setText(savedInstanceState.getString(getString(R.string.location_txt)));
@@ -103,7 +96,8 @@ public class AddEntryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        //set action bar title
+        getActivity().setTitle(getString(R.string.add_an_entry));
         userUid = getArguments().getString(getString(R.string.user_uid_key));
         if(savedInstanceState != null) {
             String retrievedImgUri = savedInstanceState.getString(getString(R.string.entry_image));
@@ -126,8 +120,7 @@ public class AddEntryFragment extends Fragment {
             @Override
             public void onChanged(@Nullable Integer uploadResult) {
                 UploadDialog uploadDialog = (UploadDialog) getActivity().getSupportFragmentManager().findFragmentByTag(getString(R.string.upload_dialog_tag));
-               // final String uploadPrefix = getContext().getString(R.string.upload_prefix);
-                //final String uploadSuffix = getContext().getString(R.string.upload_suffix);
+
                 if(uploadResult != null && uploadResult.equals (NetworkUtils.UPLOAD_SUCCESS)){
                   //  Toast.makeText(fragment.getContext(), "upload successful", Toast.LENGTH_SHORT).show();
                     if (uploadDialog != null && uploadDialog.getDialog() != null && uploadDialog.getDialog().isShowing()) {
@@ -147,10 +140,9 @@ public class AddEntryFragment extends Fragment {
             }
         };
 
-       // appViewModel.getUploadResult().observe(this, uploadObserver);
-   // UserEntry userEntry = new UserEntry("title", "story", "location", "http://imagelink.com");
-       // appViewModel.getUserEntry().observe(this, userEntryDataObserver);
-      //  appViewModel.saveEntry(userUid, userEntry);
+
+       appViewModel.getUploadResult().observe(this, uploadObserver);
+
 
     }
 
@@ -188,10 +180,7 @@ public class AddEntryFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-     //   outState.putString(getString(R.string.day), dayTextView.getText().toString());
-      //  outState.putString(getString(R.string.wk_day), wkDayTextView.getText().toString());
-      //  outState.putString(getString(R.string.month_year), monthYearTextView.getText().toString());
-      //  outState.putString(getString(R.string.time_txt), timeTextView.getText().toString());
+
         outState.putString(getString(R.string.title_txt), titleEditText.getText().toString());
         outState.putString(getString(R.string.text_txt), textEditText.getText().toString());
         outState.putString(getString(R.string.location_txt), locationEditText.getText().toString());
@@ -211,12 +200,14 @@ public class AddEntryFragment extends Fragment {
             if(resultCode == RESULT_OK){
                 // open user diary entry
                     selectedImageUri = data.getData();
+               //quick fix to make glide load image properly
+                GlideApp.with(fragment).load(selectedImageUri).into(entryImageView);
+                GlideApp.with(fragment).clear(entryImageView);
+                GlideApp.with(fragment).load(selectedImageUri).into(entryImageView);
 
-                    GlideApp.with(fragment).load(selectedImageUri).centerCrop().into(entryImageView);
-                    //GlideApp.with(fragment).load(selectedImageUri).centerCrop().into(entryImageView);
                     }
                    else{
-                        Toast.makeText(getContext(), "cannot load image", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.cannot_load_image), Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -224,7 +215,7 @@ public class AddEntryFragment extends Fragment {
 
             else{
 
-                Toast.makeText(getContext(), "no image selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show();
 
             }
         }
